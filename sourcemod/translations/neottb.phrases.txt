@@ -1,0 +1,45 @@
+"Phrases"
+{
+	"TeamFull"
+	{
+		"en"		"Sorry, this team is actually full!"
+	}
+	"BalanceMessage"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"{1} was moved to {2} for team balance"
+	}
+	"ScrambleMessage"
+	{
+		"en"		"Teams have been scrambled"
+	}
+	"ScrambleAdminNo"
+	{
+		"en"		"A scramble is already scheduled!"
+	}
+	"ScrambleAdminYes"
+	{
+		"en"		"Teams will be scrambled next round!"
+	}
+	"VoteScrambleDisabled"
+	{
+		"en"		"Vote scramble is currently disabled!"
+	}
+	"InitScrambleVote"
+	{
+		"#format"	"{1:s}"
+		"en"		"{1} has initiated a \"Scramble Teams\" vote."
+	}
+	"ScrambleVoteResultYes"
+	{
+		"en"		"\"Yes\" has won the vote, teams will be scrambled next round!"
+	}
+	"ScrambleVoteResultNo"
+	{
+		"en"		"\"No\" has won the vote."
+	}
+	"ScrambleTeams?"
+	{
+		"en"		"Scramble Teams?"
+	}
+}
