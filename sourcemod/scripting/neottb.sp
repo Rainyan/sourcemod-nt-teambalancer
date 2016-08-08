@@ -115,13 +115,18 @@ public OnMapStart()
 
 public Action:CommandScramble(client, args){
 
-	if(g_bScramble || g_bVoteScramble){
-		PrintToChat(client, "[nt-TB] %T", "ScrambleAdminNo", client);
-	}else{
-		PrintToChat(client, "[nt-TB] %T", "ScrambleAdminYes", client);
-		g_bScramble = true;
-	}
+  if (!IsValidClient(client)) {
+    return Plugin_Continue;
+  }
 
+  if (g_bScramble || g_bVoteScramble) {
+    PrintToChat(client, "[nt-TB] %T", "ScrambleAdminNo", client);
+  } else {
+    PrintToChat(client, "[nt-TB] %T", "ScrambleAdminYes", client);
+    g_bScramble = true;
+  }
+
+  return Plugin_Handled;
 }
 public Action:Event_TeamBalanceThread(Handle:event,const String:name[],bool:dontBroadcast){
 
