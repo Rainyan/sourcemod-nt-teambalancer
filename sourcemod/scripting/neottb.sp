@@ -530,7 +530,7 @@ public SendTranslatedMessage(mode, String:phrase[], String:name[], String:team[]
 
 bool:IsValidClient(client){
 
-	if (client == 0)
+	if (1 > client > MaxClients)
 		return false;
 
 	if (!IsClientConnected(client))
