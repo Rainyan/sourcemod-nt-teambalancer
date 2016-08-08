@@ -3,10 +3,10 @@
  NEOTOKYO° Team Balancer
 
  Plugin licensed under the GPLv3
- 
+
  Coded by gH0sTy - www.affenkaefig.com
- 
- Credits to: 
+
+ Credits to:
  	dubbeh for his Deathmatch Team Balancer plugin
  	BrutalGoerge for his  [TF2] gScramble + Balance plugin
 --------------------------------------------------------------
@@ -27,15 +27,15 @@ Changelog
 		*  Added scramble support
 			* Admins with kick flag can schedule a team scramble for the next round (sm_ntscramble)
 			* Teams can be auto scrambled (neottb_autoscramble) if the team score difference is >= neottb_minscoredif
-	
+
 	1.0.3
 		* Fixed an auto scramble issue
-	
+
 	1.0.4
 		* Team menu will close now for players trying to switch form one team to a full one
 		* Fixed a sm_ntscramble command issue (wrong translation phrase)
 		* Added votescramble support (!votescramble in chat)
-	
+
 	1.0.5
 		* Fix for the latest Patch
 
@@ -89,21 +89,21 @@ public OnPluginStart ()
 	g_cVarMinScoreDif = CreateConVar("neottb_minscoredif", "3", "The min. team score difference before teams get scrambled", 0);
 	g_cVarDebugLog = CreateConVar ("neottb_debug", "0", "Enable / Disable Debug Log output", 0, true, 0.0, true, 1.0);
 	AutoExecConfig(true);
-	
+
 	// Update the Plugin Version cvar
 	SetConVarString(g_cVarNeoTVersion, PLUGIN_VERSION, true, true);
-	
+
 	if(GetConVarBool(g_cVarNeoTEnable)){
 		HookEvent("game_round_start", Event_TeamBalanceThread, EventHookMode_Post);
 		RegConsoleCmd("jointeam", con_cmd_JoinTeam);
 		RegAdminCmd("sm_ntscramble", CommandScramble, ADMFLAG_KICK);
 		RegConsoleCmd("sm_votescramble", con_cmd_DoScrambleVote);
 	}
-	
+
 	//Load Translations
 	LoadTranslations("common.phrases");
 	LoadTranslations("neottb.phrases");
-	
+
 }
 
 public OnMapStart()
@@ -114,17 +114,17 @@ public OnMapStart()
 }
 
 public Action:CommandScramble(client, args){
-	
+
 	if(g_bScramble || g_bVoteScramble){
 		PrintToChat(client, "[nt-TB] %T", "ScrambleAdminNo", client);
 	}else{
 		PrintToChat(client, "[nt-TB] %T", "ScrambleAdminYes", client);
 		g_bScramble = true;
 	}
-	
+
 }
 public Action:Event_TeamBalanceThread(Handle:event,const String:name[],bool:dontBroadcast){
-	
+
 	if(GetConVarBool(g_cVarDebugLog)){
 		BuildPath(Path_SM, g_LogFile, sizeof(g_LogFile), "logs/neottb.log");
 	}
@@ -134,9 +134,9 @@ public Action:Event_TeamBalanceThread(Handle:event,const String:name[],bool:dont
 	//new iMaxClients = GetMaxClients ();
 	iPlayerLimit = GetConVarInt (g_cVarPlayerLimit);
 	new iScores[MaxClients+1][2];
-	
+
 	g_bMapStart=false;
-	
+
 	// is there currently more Jinrais then NSFs
 	// also is the player limit less than the Jinrais count minus the NSFs count
 	if ((GetJinTeamSize() > GetNSFTeamSize()) && ((GetJinTeamSize() - GetNSFTeamSize()) > iPlayerLimit)){
@@ -257,11 +257,11 @@ public Action:Event_TeamBalanceThread(Handle:event,const String:name[],bool:dont
 			}
 		}
 	}
-	
+
 	new iJinScore = GetTeamScore(TEAM_Jin);
 	new iNSFScore = GetTeamScore(TEAM_NSF);
 	new minScoreDif = GetConVarInt(g_cVarMinScoreDif);
-	
+
 	// If an Admin or the Auto scramble wants it we scramble the teams
 	if(g_bScramble || g_bVoteScramble){
 		scramble();
@@ -304,9 +304,9 @@ public GetNSFTeamSize(){
 
 // Get the total XP of a team
 public GetTeamXP(f_Team){
-	
+
 	new totalScore = 0;
-	
+
 	for(new i=1; i<=MaxClients;i++)
 	{
 		if (IsValidClient(i) && GetClientTeam(i) == f_Team)
@@ -318,22 +318,22 @@ public GetTeamXP(f_Team){
 }
 
 public Action:con_cmd_DoScrambleVote(client, args){
-	
+
 	if(!IsValidClient(client))
 		return Plugin_Continue;
-	
+
 	if(!GetConVarBool(g_cVarScrambleVoteEnable)){
-		
+
 		PrintToChat(client, "[nt-TB] %T", "VoteScrambleDisabled", client);
 		return Plugin_Continue;
 	}
-	
+
 	if(g_bVoteScramble || g_bScramble){
-		
+
 		PrintToChat(client, "[nt-TB] %T", "ScrambleAdminNo", client);
 		return Plugin_Continue;
 	}else if(g_LastScrambleVote > 0 && (GetTime() - g_LastScrambleVote) < GetConVarFloat(g_cVarScrambleVoteDelay)){
-		
+
 		new wait_time = g_LastScrambleVote + GetConVarInt(g_cVarScrambleVoteDelay) - GetTime();
 		PrintToChat(client, "[nt-TB] %T", "Vote Delay Seconds", client, wait_time);
 		return Plugin_Continue;
@@ -352,7 +352,7 @@ DoScrambleVote(client)
 		PrintToChat(client, "[nt-TB] %T", "Vote in Progress", client);
 		return;
 	}
- 
+
 	new Handle:g_hScrambleVoteMenu = CreateMenu(Handle_ScrambleVoteMenu, MenuAction_DisplayItem|MenuAction_Display);
 	SetMenuTitle(g_hScrambleVoteMenu, "Scramble teams?");
 	AddMenuItem(g_hScrambleVoteMenu, "yes", "Yes");
@@ -370,13 +370,13 @@ public Handle_ScrambleVoteMenu(Handle:g_hScrambleVoteMenu, MenuAction:action, pa
 	} else if (action == MenuAction_VoteEnd) {
 		/* 0=yes, 1=no */
 		if (param1 == 0){
-			
+
 			SendTranslatedMessage(2, "ScrambleVoteResultYes", "", "");
 			g_bVoteScramble = true;
 			g_LastScrambleVote = GetTime();
-			
+
 		}else if (param1 == 1){
-			
+
 			SendTranslatedMessage(2, "ScrambleVoteResultNo", "", "");
 			g_LastScrambleVote = GetTime();
 		}
@@ -384,21 +384,21 @@ public Handle_ScrambleVoteMenu(Handle:g_hScrambleVoteMenu, MenuAction:action, pa
 		/* Get the display string, we'll use it as a translation phrase */
 		decl String:display[64];
 		GetMenuItem(g_hScrambleVoteMenu, param2, "", 0, _, display, sizeof(display));
- 
+
 		/* Translate the string to the client's language */
 		decl String:buffer[255];
 		Format(buffer, sizeof(buffer), "%T", display, param1);
- 
+
 		/* Override the text */
 		RedrawMenuItem(buffer);
 	} else if (action == MenuAction_Display) {
 		/* Panel Handle is the second parameter */
 		new Handle:panel = Handle:param2;
-		
+
 		/* Translate to our phrase */
 		decl String:buffer[255];
 		Format(buffer, sizeof(buffer), "%T", "ScrambleTeams?", param1);
-		
+
 		SetPanelTitle(panel, buffer);
 	}
 }
@@ -408,28 +408,28 @@ scramble(){
 		BuildPath(Path_SM, g_LogFile, sizeof(g_LogFile), "logs/neottb.log");
 		LogToFile(g_LogFile, "[SCRAMBLING TEAMS]");
 	}
-	
+
 	new iScores[MaxClients+1][2];
 	new count = 0, team;
-	
+
 	team = GetRandomInt(0,1) == 1 ? TEAM_Jin : TEAM_NSF; // randomizes which team gets the first player
-	
+
 	if(GetConVarBool(g_cVarDebugLog)){
 		LogToFile(g_LogFile, "Jin Score before: %i", GetTeamXP(TEAM_Jin));
 		LogToFile(g_LogFile, "NSF Score before: %i", GetTeamXP(TEAM_NSF));
 	}
-	
+
 	for (new i=1; i<=MaxClients;i++){
 		if (IsValidClient(i) && IsValidTeam(i)){
 			iScores[count][0] = i;
 			iScores[count][1] = GetClientFrags(i);
 			count++;
 		}
-	}		
+	}
 	SortCustom2D(iScores, count, SortScoreDesc);
 	for(new i = 0; i < count; i++){
 		new iClient = iScores[i][0];
-		
+
 		if(IsValidClient(iClient)){
 			ChangeClientTeam(iClient, team);
 			team = team == TEAM_Jin ? TEAM_NSF : TEAM_Jin;
@@ -446,33 +446,33 @@ scramble(){
 
 // This sorts everything in the info array descending
 public SortScoreDesc(x[], y[], array[][], Handle:data){
-	
-    if (x[1] > y[1]) 
+
+    if (x[1] > y[1])
 		return -1;
-    else if (x[1] < y[1]) 
-		return 1;    
+    else if (x[1] < y[1])
+		return 1;
     return 0;
 }
 
 public Action:con_cmd_JoinTeam(client, args){
 	new iPlayerLimit;
-	
+
 	if(g_bMapStart){
 		iPlayerLimit = GetConVarInt(g_cVarMapStartPlayerLimit);
 	}else{
 		iPlayerLimit = GetConVarInt(g_cVarPlayerLimit);
 	}
-	
-	
+
+
 	decl String:speech[5];
 	GetCmdArgString(speech,sizeof(speech));
 	new cmdInt = StringToInt(speech);
 	new clTeam = GetClientTeam(client);
-	
+
 	// Player joins spectator, pressed Auto Assign or is an Admin
 	if(cmdInt == 1 || cmdInt == 0 || IsProtectedAdmin(client))
 		return Plugin_Continue;
-	
+
 	if(cmdInt == TEAM_Jin){
 		// Player wants to switch from NSF to Jinrai
 		if(clTeam == TEAM_NSF && ((GetJinTeamSize()+1) - (GetNSFTeamSize()-1)) > iPlayerLimit){
@@ -529,24 +529,24 @@ public SendTranslatedMessage(mode, String:phrase[], String:name[], String:team[]
 }
 
 bool:IsValidClient(client){
-	
+
 	if (client == 0)
 		return false;
-	
+
 	if (!IsClientConnected(client))
 		return false;
-	
+
 	if (IsFakeClient(client))
 		return false;
-	
+
 	if (!IsClientInGame(client))
 		return false;
-	
+
 	return true;
 }
 
 bool:IsValidTeam(client){
-	
+
 	new team = GetClientTeam(client);
 	if (team == TEAM_Jin || team == TEAM_NSF)
 		return true;
