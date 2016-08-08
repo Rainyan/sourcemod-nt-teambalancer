@@ -44,7 +44,7 @@ Changelog
 #pragma semicolon 1
 #include <sourcemod>
 #include <sdktools>
-#define PLUGIN_VERSION	"1.0.5"
+#define PLUGIN_VERSION	"1.0.6"
 #define MAX_STRING_LEN 256
 #define TEAM_Jin	2
 #define TEAM_NSF	3
