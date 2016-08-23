@@ -6,6 +6,9 @@
 
  Coded by gH0sTy - www.affenkaefig.com
 
+ This version is modified from gHosTy's original work
+ (v1.0.0 to v1.0.5), please see the changelog below.
+
  Credits to:
  	dubbeh for his Deathmatch Team Balancer plugin
  	BrutalGoerge for his  [TF2] gScramble + Balance plugin
@@ -38,6 +41,9 @@ Changelog
 
 	1.0.5
 		* Fix for the latest Patch
+
+  1.0.6
+    * Fix for detecting invalid client indexes
 
 **************************************************************/
 
