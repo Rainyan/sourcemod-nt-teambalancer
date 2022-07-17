@@ -42,15 +42,18 @@ Changelog
 	1.0.5
 		* Fix for the latest Patch
 
-  1.0.6
-    * Fix for detecting invalid client indexes
+	1.0.6
+		* Fix for detecting invalid client indexes
+		
+	1.0.7
+		* Fix compile warning for deprecated convar flag FCVAR_PLUGIN in the cvar "neottb_version"
 
 **************************************************************/
 
 #pragma semicolon 1
 #include <sourcemod>
 #include <sdktools>
-#define PLUGIN_VERSION	"1.0.6"
+#define PLUGIN_VERSION	"1.0.7"
 #define MAX_STRING_LEN 256
 #define TEAM_Jin	2
 #define TEAM_NSF	3
@@ -84,7 +87,7 @@ new String:g_LogFile[64];
 
 public OnPluginStart ()
 {
-	g_cVarNeoTVersion = CreateConVar ("neottb_version", PLUGIN_VERSION, "NEOTOKYO° Team Balancer version", FCVAR_PLUGIN | FCVAR_SPONLY | FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_DONTRECORD);
+	g_cVarNeoTVersion = CreateConVar ("neottb_version", PLUGIN_VERSION, "NEOTOKYO° Team Balancer version", FCVAR_SPONLY | FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_DONTRECORD);
 	g_cVarNeoTEnable = CreateConVar ("neottb_enable", "1", "Enable or disable the team balancer", 0);
 	g_cVarPlayerLimit = CreateConVar ("neottb_playerlimit", "1", "How uneven the teams can get before getting balanced", 0, true, 1.0, true, 32.0);
 	g_cVarMapStartPlayerLimit = CreateConVar ("neottb_mapstart_playerlimit", "4", "How uneven the teams can get on the first Map load", 0, true, 1.0, true, 32.0);
