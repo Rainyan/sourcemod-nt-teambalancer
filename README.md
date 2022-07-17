@@ -2,7 +2,7 @@
 Neotokyo team balance / votescramble plugin (neottb).<br />
 Coded by gH0sTy. Rehosted here with GPLv3 license as the Neotokyo forums went offline.<br />
 <br />
-<a href="https://github.com/Rainyan/sourcemod-nt-teambalancer/archive/master.zip">Download</a> (the compiled binary is for SourceMod 1.7 or newer, however the source should compile fine for older versions).
+<a href="https://github.com/Rainyan/sourcemod-nt-teambalancer/archive/master.zip">Download link here.</a> Please note that the pre-compiled plugin is built for SourceMod version 1.10 or newer, however the source code should compile fine for older versions.
 
 ### Cvars
 ```
